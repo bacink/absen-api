@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CpnsController;
 use App\Http\Controllers\Api\PppkController;
+use App\Http\Controllers\Api\PublicController;
 use App\Http\Controllers\Api\SignatureController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -40,4 +41,13 @@ Route::controller(SignatureController::class)
     ->group(function () {
         Route::post('/sign-pppk', 'savePppkSignature')->name('pppk');
         Route::post('/sign-cpns', 'saveCpnsSignature')->name('cpns');
+    });
+
+Route::controller(PublicController::class)
+    ->name('public.')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/show-pppk', 'showPppk')->name('show-pppk');
+        Route::get('/show-cpns', 'showCpns')->name('show-cpns');
+        Route::post('/save-cpns-signature', 'saveCpnsSignature')->name('save-cpns-signature');
     });

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nomor_peserta');
             $table->string('nik');
             $table->string('nama_lengkap');
-            $table->string('jadwal');
+            $table->date('jadwal');
             $table->string('lokasi');
             $table->string('sesi');
             $table->string('ruang');

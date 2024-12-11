@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Imports\PppkImport;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel;
 
 class PppkController extends Controller
 {
@@ -15,8 +15,17 @@ class PppkController extends Controller
             'file' => 'required|mimes:xls,xlsx'
         ]);
 
-        Excel::import(new PppkImport(), $request->file('file'));
+        $import = (new PppkImport)->import($request->file('file'), null, Excel::CSV);
+        if ($import) {
+            return response()->json([
+                'status' => 'success',
+                'data' => null
+            ]);
+        }
 
-        return redirect()->back()->with('success', 'Data Calon PPPK berhasil di import');
+        return response()->json([
+            'status' => 'fail',
+            'data' => $request->all()
+        ]);
     }
 }

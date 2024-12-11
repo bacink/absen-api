@@ -19,4 +19,16 @@ class Pppk extends Model
         'ruang',
         'signature'
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'jadwal' => 'datetime:d-m-Y',
+        ];
+    }
 }

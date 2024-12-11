@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Imports\CpnsImport;
+use App\Models\Cpns;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel;
 
 class CpnsController extends Controller
 {
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xls,xlsx'
+            'file' => 'required|mimes:csv,csv'
         ]);
 
-        $import =   Excel::import(new CpnsImport(), $request->file('file'));
-
+        $import = (new CpnsImport)->import($request->file('file'), null, Excel::CSV);
         if ($import) {
             return response()->json([
                 'status' => 'success',
