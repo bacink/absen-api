@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
-    public function showCpns()
+    public function showCpns(Request $request)
     {
-        $data = Cpns::all();
+        $signature = $request->signature;
+
+        if ($signature === 'no_ttd') {
+            $data = Cpns::whereNull('signature')->get();
+        } elseif ($signature === 'ttd') {
+            $data = Cpns::whereNotNull('signature')->get();
+        } else {
+            $data = Cpns::get();
+        }
+
+
         return response()->json([
             'status' => 'success',
             'data' => $data,
